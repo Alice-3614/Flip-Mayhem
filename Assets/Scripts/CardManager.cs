@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 using System.Collections.Generic;
 using System.Linq;
 using System;
@@ -8,6 +9,11 @@ public class CardManager : MonoBehaviour
     public List<string> Cards = new List<string>();//カードの並び順としても使用
     [SerializeField] private GameObject cardPrefab;//カードのプレハブ
     [SerializeField] private GameObject BattleField;
+    public int Player1Score = 0;//スキル発動で消費する
+    public int Player2Score = 0;//スキル発動で消費する
+    public int selectCardMax;//選択できるカードの枚数(基本は2)s
+    public List<int> SelectedCardNumbers = new List<int>(); // 選択されたカードの番号を格納するリスト
+    public List<GameObject> SelectedCards = new List<GameObject>(); // 選択されたカードのGameObjectを格納するリスト
     void Start()
     {
         Cards.Clear();
@@ -20,6 +26,7 @@ public class CardManager : MonoBehaviour
         }
         Shuffle();
         GenerateCards();
+        selectCardMax = 2; // 選択できるカードの最大枚数を設定
     }
     public void Shuffle()
     {
@@ -32,9 +39,37 @@ public class CardManager : MonoBehaviour
         {
             GameObject card = Instantiate(cardPrefab, new Vector3(i * 2.0f, 0, 0), Quaternion.identity);
             card.name = Cards[i];
+            card.GetComponent<TrampCard>().cardNumber = int.Parse(Cards[i].Substring(1)); // カード番号を設定
+            card.GetComponent<TrampCard>().cardSuit = Cards[i].Substring(0, 1); // カードのスートを設定
             card.transform.SetParent(BattleField.transform);
             // カードの見た目を設定するコードをここに追加
         }
         Cards.Clear();
+    }
+    public void MatchCheck()//選択されたカードの合致チェック
+    {
+        for (int a = 0; a < SelectedCardNumbers.Count; a++)
+        {
+            for (int b = a + 1; b < SelectedCardNumbers.Count; b++)
+            {
+                if (SelectedCardNumbers[a] == SelectedCardNumbers[b])
+                {
+                    Debug.Log("Match found: " + SelectedCardNumbers[a]);
+                    // マッチした場合の処理をここに追加
+                }
+                else
+                {
+                    Debug.Log("No match: " + SelectedCardNumbers[a] + " and " + SelectedCardNumbers[b]);
+                    // マッチしなかった場合の処理をここに追加
+                    foreach (GameObject card in SelectedCards)
+                    {
+                        card.GetComponent<Image>().color = Color.white; // 選択されたカードの色を元に戻す
+                    }
+                }
+            }
+        }
+        SelectedCardNumbers.Clear(); // チェック後に選択されたカードの番号リストをクリア
+        SelectedCards.Clear(); // チェック後に選択されたカードのGameObjectリストをクリア
+
     }
 }
