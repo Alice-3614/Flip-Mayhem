@@ -557,6 +557,11 @@ MonoBehaviour:
   Cards: []
   cardPrefab: {fileID: 2350533540024312849, guid: c5d7b6088ddf24e85be6bb6e2f0ddc72, type: 3}
   BattleField: {fileID: 71488392}
+  Player1Score: 0
+  Player2Score: 0
+  selectCardMax: 2
+  SelectedCardNumbers: 
+  SelectedCards: []
 --- !u!1 &1753890678
 GameObject:
   m_ObjectHideFlags: 0
