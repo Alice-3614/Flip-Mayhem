@@ -14,7 +14,7 @@ public class TrampCard : MonoBehaviour
 
     public void OnClick()
     {
-        if (cardManager.SelectedCardNumbers.Count < cardManager.selectCardMax)
+        if (cardManager.SelectedCardNumbers.Count < cardManager.selectCardMax && !cardManager.SelectedCardNumbers.Contains(cardNumber))
         {
             // カードが選択されたときの処理をここに追加
             cardManager.SelectedCardNumbers.Add(cardNumber);
